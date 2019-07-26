@@ -5,7 +5,7 @@ public class Topic {
     int id;
     String name;
     int ord;
-
+    int secid;
     @Override
     public String toString() {
         return "Topic{" +
@@ -39,10 +39,10 @@ public class Topic {
         this.ord = ord;
     }
 
-    public Topic(int id, String name, int ord) {
-
+    public Topic(int id, String name, int ord, int secid) {
         this.id = id;
         this.name = name;
         this.ord = ord;
+        this.secid = secid;
     }
 }
