@@ -29,7 +29,14 @@
         <activity android:name=".sectionsActivity" />
         <activity android:name=".topicsActivity" />
         <activity android:name=".loginActivity" />
-        <activity android:name=".contentsActivity"></activity>
+        <activity android:name=".contentsActivity" />
+        <activity android:name=".mcq_activity" />
+        <activity android:name=".mcqall_activity" />
+        <activity android:name=".fillblank_activity" />
+        <activity android:name=".table_activity" />
+        <activity android:name=".match_activity" />
+        <activity android:name=".TEST" />
+        <activity android:name=".video_activity"></activity>
     </application>
 
 </manifest>

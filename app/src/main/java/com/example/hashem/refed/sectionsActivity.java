@@ -61,32 +61,30 @@ public class sectionsActivity extends AppCompatActivity {
                                 try {
                                     JSONObject sec = jArray.getJSONObject(k);
                                     // Pulling items from the array
-
-
                                     sections[k] = new Section(Integer.parseInt(sec.getString("id")), Integer.parseInt(sec.getString("modid")),sec.getString("name"), Integer.parseInt(sec.getString("ord")));
-                                    ArrayList <Section> sectionsArr = new ArrayList<>(Arrays.asList(sections));
-
                                     //Toast.makeText(sectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
-                                    final ArrayAdapter<Section> arrayAdapter = new ArrayAdapter<Section>(sectionsActivity.this,  android.R.layout.simple_list_item_1, sectionsArr);
-                                    sectionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                            Toast.makeText(sectionsActivity.this, arrayAdapter.getItem(position).name, Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(sectionsActivity.this, topicsActivity.class);
-                                            intent.putExtra("secname", arrayAdapter.getItem(position).getName());
-                                            intent.putExtra("secid", arrayAdapter.getItem(position).getId());
-
-
-                                        }
-                                    });
-                                    sectionsList.setAdapter(arrayAdapter);
-                                } catch (JSONException e) {
+                                    } catch (JSONException e) {
                                 }
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                        final ArrayAdapter<Section> arrayAdapter = new ArrayAdapter<Section>(sectionsActivity.this,  android.R.layout.simple_list_item_1, sections);
+                        sectionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                Intent intent = new Intent(sectionsActivity.this, topicsActivity.class);
+                                intent.putExtra("secname", arrayAdapter.getItem(position).getName());
+                                intent.putExtra("secid", arrayAdapter.getItem(position).getId());
+                                Toast.makeText(sectionsActivity.this, arrayAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+                                startActivity(intent);
+
+                            }
+                        });
+                        sectionsList.setAdapter(arrayAdapter);
 
                     }
                 },

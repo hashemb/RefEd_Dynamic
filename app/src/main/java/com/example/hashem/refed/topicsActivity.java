@@ -36,7 +36,6 @@ public class topicsActivity extends AppCompatActivity {
 
         final ListView topicsList = findViewById(R.id.topicsList);
         Intent i = getIntent();
-
         String url = conn.toString() + "/refed/getTopics.php?secid=" + i.getExtras().get("secid").toString();
         RequestQueue queue = Volley.newRequestQueue(topicsActivity.this);
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
@@ -44,8 +43,6 @@ public class topicsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String result) {
                         try {
-
-
                             JSONArray jArray = new JSONArray(result);
                             topics = new Topic[jArray.length()];
 
@@ -54,32 +51,31 @@ public class topicsActivity extends AppCompatActivity {
                                 try {
                                     JSONObject sec = jArray.getJSONObject(k);
                                     // Pulling items from the array
-
-
                                     topics[k] = new Topic(Integer.parseInt(sec.getString("id")), sec.getString("name"),Integer.parseInt(sec.getString("ord")), Integer.parseInt(sec.getString("secid")));
-                                    ArrayList<Topic> topicsArr = new ArrayList<>(Arrays.asList(topics));
-
-                                    //Toast.makeText(sectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
-                                    final ArrayAdapter<Topic> arrayAdapter = new ArrayAdapter<Topic>(topicsActivity.this,  android.R.layout.simple_list_item_1, topicsArr);
-                                    topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                            Toast.makeText(topicsActivity.this, arrayAdapter.getItem(position).name, Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(topicsActivity.this, contentsActivity.class);
-                                            intent.putExtra("topname", arrayAdapter.getItem(position).getName());
-                                            intent.putExtra("topid", arrayAdapter.getItem(position).getId());
-
-
-                                        }
-                                    });
-                                    topicsList.setAdapter(arrayAdapter);
-                                } catch (JSONException e) {
+                                    //ArrayList<Topic> topicsArr = new ArrayList<>(Arrays.asList(topics));
+                                    //Toast.makeText(topicsActivity.this, topics[k].toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    catch (JSONException e) {
                                 }
                             }
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        final ArrayAdapter<Topic> arrayAdapter = new ArrayAdapter<Topic>(topicsActivity.this,  android.R.layout.simple_list_item_1, topics);
+                        topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(topicsActivity.this, contentsActivity.class);
+                                //intent.putExtra("topid", arrayAdapter.getItem(position).getId());
+                                //intent.putExtra("topname", arrayAdapter.getItem(position).getName());
+                                //Toast.makeText(topicsActivity.this, arrayAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+                                startActivity(intent);
+                            }
+                        });
+                        topicsList.setAdapter(arrayAdapter);
+
 
                     }
                 },
@@ -89,13 +85,6 @@ public class topicsActivity extends AppCompatActivity {
                         Log.i("error", error.toString());
                     }
                 });
-
-
         queue.add(jsonRequest);
-
-
-
-
-
     }
 }
