@@ -55,11 +55,11 @@ public class contentsActivity extends AppCompatActivity {
                                     JSONObject con = jArray.getJSONObject(k);
                                     if (Integer.parseInt(con.getString("type")) == 1){ // a question
                                         contents[k] = new Content(Integer.parseInt(con.getString("id")), Integer.parseInt(con.getString("topicid")),con.getString("qtext"), con.getString("file"),Integer.parseInt(con.getString("ord")),Integer.parseInt(con.getString("type")),Integer.parseInt(con.getString("qtype")),con.getString("hint"), con.getString("hintpic"));
-                                        Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
                                     }
                                     else if(Integer.parseInt(con.getString("type")) == 2){ // a video
                                         contents[k] = new Content(Integer.parseInt(con.getString("id")), Integer.parseInt(con.getString("topicid")), con.getString("file"),Integer.parseInt(con.getString("ord")),Integer.parseInt(con.getString("type")));
-                                        Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
+                                    //    Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
                                     }
 
                                 } catch (JSONException e) {

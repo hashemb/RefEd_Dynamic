@@ -68,8 +68,8 @@ public class topicsActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Intent intent = new Intent(topicsActivity.this, contentsActivity.class);
-                                //intent.putExtra("topid", arrayAdapter.getItem(position).getId());
-                                //intent.putExtra("topname", arrayAdapter.getItem(position).getName());
+                                intent.putExtra("topid", arrayAdapter.getItem(position).getId());
+                                intent.putExtra("topname", arrayAdapter.getItem(position).getName());
                                 //Toast.makeText(topicsActivity.this, arrayAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                             }
