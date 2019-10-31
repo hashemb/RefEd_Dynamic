@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,24 +33,27 @@ public class mcqall_activity extends AppCompatActivity {
     TextView qtextview;
     Content content;
     CheckBox cb;
+    Button btn1, btn2;
     Answer[] alternatives;
     LinearLayout ll;
     Connection conn = new Connection();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mcqall);
 
+                ll = findViewById(R.id.linearLayout);
+                qtextview = findViewById(R.id.qtextview2);
+                qfile = findViewById(R.id.qfile2);
 
-        ll = findViewById(R.id.linearLayout);
-        qtextview = findViewById(R.id.qtextview2);
-        qfile = findViewById(R.id.qfile2);
-        Intent i = getIntent();
-        String url = conn.toString() + "/refed/getContentDetails.php?oid=" + i.getExtras().get("conid").toString();
-        RequestQueue queue = Volley.newRequestQueue(mcqall_activity.this);
-        StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+                btn1 = findViewById(R.id.btnCheckMcqall);
+                btn2 = findViewById(R.id.btnHintMcqall);
+
+                Intent i = getIntent();
+                String url = conn.toString() + "/refed/getContentDetails.php?oid=" + i.getExtras().get("conid").toString();
+                RequestQueue queue = Volley.newRequestQueue(mcqall_activity.this);
+                StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
                     @Override
                     public void onResponse(String result) {
                         try {
@@ -65,7 +70,9 @@ public class mcqall_activity extends AppCompatActivity {
                             }
 
                         } catch (Exception e) {
+
                             e.printStackTrace();
+
                         }
                         qtextview.setText(content.getQtext());
                         Picasso.with(mcqall_activity.this).load(conn.toString() + "/refed/" + content.getFile()).into(qfile);
@@ -84,11 +91,29 @@ public class mcqall_activity extends AppCompatActivity {
                         Log.i("error", error.toString());
                     }
                 });
-            queue.add(jsonRequest);
-            }
+                queue.add(jsonRequest);
+
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Check check = new Check(2, oid, ,mcqall_activity);
+                    }
+                });
+
+                btn2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+
+
+    }
+
+
                 static void shuffleArray(Answer[] ar)
                 {
-
                     Random rnd = new Random();
                     for (int i = ar.length - 1; i > 0; i--)
                     {
@@ -99,4 +124,4 @@ public class mcqall_activity extends AppCompatActivity {
                         ar[i] = a;
                     }
                 }
-}
+        }

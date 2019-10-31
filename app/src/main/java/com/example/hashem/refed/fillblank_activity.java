@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,23 +25,29 @@ import org.json.JSONObject;
 
 
 public class fillblank_activity extends AppCompatActivity {
-
+    int oid;
     ImageView qfile;
     TextView qtextview;
     Content content;
     Answer[] alternatives;
     EditText et;
+    Button btn1;
+    Button btn2;
     Connection conn = new Connection();
+    Check check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fillblank);
-
+        btn1 = findViewById(R.id.btnCheckBlank);
+        btn2 = findViewById(R.id.btnHintBlank);
         qtextview = findViewById(R.id.qtextview3);
         qfile = findViewById(R.id.qfile3);
         et = findViewById(R.id.answerText);
-        Intent i = getIntent();
+
+        final Intent i = getIntent();
+
         String url = conn.toString() + "/refed/getContentDetails.php?oid=" + i.getExtras().get("conid").toString();
         RequestQueue queue = Volley.newRequestQueue(fillblank_activity.this);
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
@@ -55,8 +64,10 @@ public class fillblank_activity extends AppCompatActivity {
                                 else{
                                     alternatives[k-1] = new Answer(Integer.parseInt(contentjson.getString("id")),Integer.parseInt(contentjson.getString("objectid")),contentjson.getString("atext"),Integer.parseInt(contentjson.getString("ord")),Integer.parseInt(contentjson.getString("correct")));
                                 }
-                                //Toast.makeText(sectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
+
                             }
+                            oid = Integer.parseInt(i.getExtras().get("conid").toString());
+                            //check = new Check(3, oid, et.getText().toString(), fillblank_activity.this);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -72,6 +83,30 @@ public class fillblank_activity extends AppCompatActivity {
                         Log.i("error", error.toString());
                     }
                 });
+
         queue.add(jsonRequest);
+
+
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                check = new Check(3, oid, et.getText().toString(), fillblank_activity.this);
+                check.start();
+
+            }
+        });
+
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ShowHint sh = new ShowHint(oid, fillblank_activity.this);
+                sh.start();
+
+            }
+        });
     }
 }

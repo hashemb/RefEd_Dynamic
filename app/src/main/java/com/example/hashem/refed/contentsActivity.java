@@ -40,12 +40,11 @@ public class contentsActivity extends AppCompatActivity {
         //String url = conn.toString() + "/refed/getContents.php?tid=1";
         RequestQueue queue = Volley.newRequestQueue(contentsActivity.this);
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
+
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String result) {
                         try {
-
-
                             JSONArray jArray = new JSONArray(result);
                             contents = new Content[jArray.length()];
 
@@ -123,18 +122,16 @@ public class contentsActivity extends AppCompatActivity {
                         Log.i("error", error.toString());
                     }
                 });
-
-
-        queue.add(jsonRequest);
-    }
-
-    public int activityType(int type,int qtype){
-        if(type == 1) { // question
-            return qtype;
+                queue.add(jsonRequest);
             }
-        else{ // video
-        return 10;
-        }
-    }
+
+            public int activityType(int type,int qtype){
+                if(type == 1) { // question
+                    return qtype;
+                    }
+                else{ // video
+                return 10;
+                }
+            }
 
 }

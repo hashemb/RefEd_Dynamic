@@ -51,8 +51,6 @@ public class sectionsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String result) {
                         try {
-
-
                             JSONArray jArray = new JSONArray(result);
                             sections = new Section[jArray.length()];
 
@@ -70,7 +68,6 @@ public class sectionsActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                         final ArrayAdapter<Section> arrayAdapter = new ArrayAdapter<Section>(sectionsActivity.this,  android.R.layout.simple_list_item_1, sections);
                         sectionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

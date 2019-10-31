@@ -31,6 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class mcq_activity extends AppCompatActivity {
     RadioGroup radioGroup;
     ImageView qfile;
+    int oid;
     TextView qtextview;
     Content content;
     RadioButton rb;
@@ -40,13 +41,17 @@ public class mcq_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mcq);
+
         radioGroup = findViewById(R.id.alts_group);
+
         qtextview = findViewById(R.id.qtextview);
         qfile = findViewById(R.id.qfile);
         Intent i = getIntent();
-        String url = conn.toString() + "/refed/getContentDetails.php?oid=" + i.getExtras().get("conid").toString();
+        oid = Integer.parseInt(i.getExtras().get("conid").toString());
+        String url = conn.toString() + "/refed/getContentDetails.php?oid=" + oid;
         RequestQueue queue = Volley.newRequestQueue(mcq_activity.this);
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
+
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String result) {
@@ -56,14 +61,12 @@ public class mcq_activity extends AppCompatActivity {
                             for (int k=0; k < jArray.length(); k++) {
 
                                     JSONObject contentjson = jArray.getJSONObject(k);
-
                                     if(k == 0){
                                     content = new Content(Integer.parseInt(contentjson.getString("id")), Integer.parseInt(contentjson.getString("topicid")), contentjson.getString("qtext"), contentjson.getString("file"), Integer.parseInt(contentjson.getString("ord")), Integer.parseInt(contentjson.getString("type")), Integer.parseInt(contentjson.getString("qtype")), contentjson.getString("hint"), contentjson.getString("hintpic"));}
                                     else {
                                     alternatives[k-1] = new Answer(Integer.parseInt(contentjson.getString("id")),Integer.parseInt(contentjson.getString("objectid")),contentjson.getString("atext"),Integer.parseInt(contentjson.getString("ord")),Integer.parseInt(contentjson.getString("correct")));
                                     }
                                     //Toast.makeText(sectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
-
                             }
 
                         } catch (Exception e) {
@@ -88,7 +91,25 @@ public class mcq_activity extends AppCompatActivity {
                     }
                 });
                 queue.add(jsonRequest);
-        }
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                String radioText = rb.getText().toString();
+
+
+                Check check = new Check(1,oid,radioText ,mcq_activity.this);
+                check.start();
+
+            }
+        });
+
+    }
+
+
             static void shuffleArray(Answer[] ar)
             {
                 // If running on Java 6 or older, use `new Random()` on RHS here
