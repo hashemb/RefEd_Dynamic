@@ -21,26 +21,25 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
-        <activity android:name=".signupActivity">
+        <activity android:name=".SignupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".welcomeActivity" />
-        <activity android:name=".modulesActivity" />
-        <activity android:name=".sectionsActivity" />
-        <activity android:name=".topicsActivity" />
-        <activity android:name=".loginActivity" />
-        <activity android:name=".contentsActivity" />
-        <activity android:name=".mcq_activity" />
-        <activity android:name=".mcqall_activity" />
-        <activity android:name=".fillblank_activity" />
-        <activity android:name=".table_activity" />
-        <activity android:name=".match_activity" />
-        <activity android:name=".TEST" />
-        <activity android:name=".video_activity"></activity>
+        <activity android:name=".SplashActivity" />
+        <activity android:name=".ModulesActivity" />
+        <activity android:name=".SectionsActivity" />
+        <activity android:name=".TopicsActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ContentsActivity" />
+        <activity android:name=".McqActivity" />
+        <activity android:name=".McqAllActivity" />
+        <activity android:name=".FillBlankActivity" />
+        <activity android:name=".TableActivity" />
+        <activity android:name=".MatchActivity" />
+        <activity android:name=".VideoActivity"></activity>
     </application>
 
 </manifest>

@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,14 +17,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hashem.refed.FunctionsClasses.Check;
+import com.example.hashem.refed.FunctionsClasses.ShowHint;
+import com.example.hashem.refed.Models.Answer;
+import com.example.hashem.refed.Models.Connection;
+import com.example.hashem.refed.Models.Content;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-public class mcqall_activity extends AppCompatActivity {
+public class McqAllActivity extends AppCompatActivity {
 
     //RadioGroup radioGroup;
     ImageView qfile;
@@ -35,6 +39,9 @@ public class mcqall_activity extends AppCompatActivity {
     CheckBox cb;
     Button btn1, btn2;
     Answer[] alternatives;
+    int oid;
+
+    ArrayList<String> checked;
     LinearLayout ll;
     Connection conn = new Connection();
     @Override
@@ -48,10 +55,14 @@ public class mcqall_activity extends AppCompatActivity {
 
                 btn1 = findViewById(R.id.btnCheckMcqall);
                 btn2 = findViewById(R.id.btnHintMcqall);
+                checked = new ArrayList<String>();
 
                 Intent i = getIntent();
                 String url = conn.toString() + "/refed/getContentDetails.php?oid=" + i.getExtras().get("conid").toString();
-                RequestQueue queue = Volley.newRequestQueue(mcqall_activity.this);
+
+                oid = i.getExtras().getInt("conid");
+
+                RequestQueue queue = Volley.newRequestQueue(McqAllActivity.this);
                 StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                     @Override
@@ -66,7 +77,7 @@ public class mcqall_activity extends AppCompatActivity {
                                 else{
                                     alternatives[k-1] = new Answer(Integer.parseInt(contentjson.getString("id")),Integer.parseInt(contentjson.getString("objectid")),contentjson.getString("atext"),Integer.parseInt(contentjson.getString("ord")),Integer.parseInt(contentjson.getString("correct")));
                                 }
-                                //Toast.makeText(sectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(SectionsActivity.this, sections[0].toString(), Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (Exception e) {
@@ -75,11 +86,11 @@ public class mcqall_activity extends AppCompatActivity {
 
                         }
                         qtextview.setText(content.getQtext());
-                        Picasso.with(mcqall_activity.this).load(conn.toString() + "/refed/" + content.getFile()).into(qfile);
+                        Picasso.with(McqAllActivity.this).load(conn.toString() + "/refed/" + content.getFile()).into(qfile);
                         shuffleArray(alternatives);
                         for(int i = 0; i < alternatives.length ;i++){
 
-                            cb = new CheckBox(mcqall_activity.this);
+                            cb = new CheckBox(McqAllActivity.this);
                             cb.setText(alternatives[i].getAtext());
                             ll.addView(cb);
                         }
@@ -96,14 +107,34 @@ public class mcqall_activity extends AppCompatActivity {
                 btn1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Check check = new Check(2, oid, ,mcqall_activity);
+                        int count = ll.getChildCount();
+                        for(int i = 0; i < count; i++ ){
+                            CheckBox checkBox = (CheckBox) ll.getChildAt(i);
+                            View view = ll.getChildAt(i);
+                            if (view instanceof CheckBox) {
+                                if (((CheckBox) view).isChecked()){ checked.add(checkBox.getText().toString()); Log.d("Check debug", "In if");
+                                    Log.d("Check debug", checked.toString());
+                                }
+                                else {
+                                    Log.d("Check debug", "In else");
+                                }
+                            }
+
+                            /*if (checkBox.isChecked()) checked.add(checkBox.getText().toString());
+                            else continue;
+*/
+                        }
+                        Check check = new Check(2, oid,  checked, McqAllActivity.this);
+                        check.start();
+                        Log.d("Check debug", check.toString());
                     }
                 });
 
                 btn2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        ShowHint showHint = new ShowHint(oid, McqAllActivity.this);
+                        showHint.start();
                     }
                 });
 

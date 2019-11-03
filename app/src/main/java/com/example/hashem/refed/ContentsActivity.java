@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,15 +15,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hashem.refed.Models.Connection;
+import com.example.hashem.refed.Models.Content;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class contentsActivity extends AppCompatActivity {
+public class ContentsActivity extends AppCompatActivity {
     ListView contentsList;
     Content[] contents;
     Connection conn = new Connection();
@@ -38,7 +36,7 @@ public class contentsActivity extends AppCompatActivity {
 
         String url = conn.toString() + "/refed/getContents.php?tid=" + i.getExtras().get("topid").toString();
         //String url = conn.toString() + "/refed/getContents.php?tid=1";
-        RequestQueue queue = Volley.newRequestQueue(contentsActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(ContentsActivity.this);
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
 
                 new Response.Listener<String>() {
@@ -54,11 +52,11 @@ public class contentsActivity extends AppCompatActivity {
                                     JSONObject con = jArray.getJSONObject(k);
                                     if (Integer.parseInt(con.getString("type")) == 1){ // a question
                                         contents[k] = new Content(Integer.parseInt(con.getString("id")), Integer.parseInt(con.getString("topicid")),con.getString("qtext"), con.getString("file"),Integer.parseInt(con.getString("ord")),Integer.parseInt(con.getString("type")),Integer.parseInt(con.getString("qtype")),con.getString("hint"), con.getString("hintpic"));
-                                        //Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(ContentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
                                     }
                                     else if(Integer.parseInt(con.getString("type")) == 2){ // a video
                                         contents[k] = new Content(Integer.parseInt(con.getString("id")), Integer.parseInt(con.getString("topicid")), con.getString("file"),Integer.parseInt(con.getString("ord")),Integer.parseInt(con.getString("type")));
-                                    //    Toast.makeText(contentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
+                                    //    Toast.makeText(ContentsActivity.this, contents[k].toString(), Toast.LENGTH_SHORT).show();
                                     }
 
                                 } catch (JSONException e) {
@@ -68,7 +66,7 @@ public class contentsActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        final ArrayAdapter<Content> arrayAdapter = new ArrayAdapter<Content>(contentsActivity.this,  android.R.layout.simple_list_item_1, contents);
+                        final ArrayAdapter<Content> arrayAdapter = new ArrayAdapter<Content>(ContentsActivity.this,  android.R.layout.simple_list_item_1, contents);
                         contentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,37 +76,37 @@ public class contentsActivity extends AppCompatActivity {
                                 int actType = activityType(type, qtype);
                                 switch(actType){
                                     case 1:
-                                        intent = new Intent(contentsActivity.this, mcq_activity.class);
+                                        intent = new Intent(ContentsActivity.this, McqActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                     case 2:
-                                        intent = new Intent(contentsActivity.this, mcqall_activity.class);
+                                        intent = new Intent(ContentsActivity.this, McqAllActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                     case 3:
-                                        intent = new Intent(contentsActivity.this, fillblank_activity.class);
+                                        intent = new Intent(ContentsActivity.this, FillBlankActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                     case 4:
-                                        intent = new Intent(contentsActivity.this, table_activity.class);
+                                        intent = new Intent(ContentsActivity.this, TableActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                     case 5:
-                                        intent = new Intent(contentsActivity.this, match_activity.class);
+                                        intent = new Intent(ContentsActivity.this, MatchActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                     case 10:
-                                        intent = new Intent(contentsActivity.this, video_activity.class);
+                                        intent = new Intent(ContentsActivity.this, VideoActivity.class);
                                         intent.putExtra("conid", arrayAdapter.getItem(position).getId());
                                         startActivity(intent);
                                         break;
                                 }
-                                //Toast.makeText(contentsActivity.this, arrayAdapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(ContentsActivity.this, arrayAdapter.getItem(position).getId(), Toast.LENGTH_SHORT).show();
                                 //startActivity(intent);
 
                             }
@@ -130,7 +128,7 @@ public class contentsActivity extends AppCompatActivity {
                     return qtype;
                     }
                 else{ // video
-                return 10;
+                return 10; // Check RefedApp.doc
                 }
             }
 

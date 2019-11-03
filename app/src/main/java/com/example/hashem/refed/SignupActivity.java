@@ -14,29 +14,40 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hashem.refed.Models.Connection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class loginActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     EditText un;
     EditText pw;
+    EditText cpw;
+    //String URL_IP = "192.168.1.106";
     Connection conn;
     String success;
     String id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
-        un = (EditText) findViewById(R.id.un);
-        pw = (EditText) findViewById(R.id.pw);
-        }
-        public void login_btn(View view) {
-            String un_login = un.getText().toString().trim();
-            String pw_login = pw.getText().toString().trim();
-            String url = conn.toString() + "/refed/login.php?un_login="+ un_login +"&pw_login=" + pw_login;
-            RequestQueue queue = Volley.newRequestQueue(loginActivity.this);
+        un = (EditText) findViewById(R.id.un_signup);
+        pw = (EditText) findViewById(R.id.pw_signup);
+        cpw = (EditText) findViewById(R.id.cpw_signup);
+    }
+    public void signup_btn(View view) {
+        String un_signup = un.getText().toString().trim();
+        String pw_signup = pw.getText().toString().trim();
+        String cpw_signup = cpw.getText().toString().trim();
+        if (!pw_signup.equalsIgnoreCase(cpw_signup)){Toast.makeText(SignupActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();}
+        else {
+            conn = new Connection();
+            String url = conn.toString() + "/refed/signup.php?un_signup="+ un_signup +"&pw_signup=" + pw_signup;
+            Log.d("h1", url);
+            RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
 
 
             StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
@@ -47,17 +58,20 @@ public class loginActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(result);
                                 success = jsonObject.getString("success");
                                 id = jsonObject.getString("id");
-                                }
-                                catch (JSONException e) {
+                            } catch (JSONException e) {
                                 e.printStackTrace();
-                                }
-                            if(!result.isEmpty() && success == "true"){
-                                Intent i = new Intent(loginActivity.this, modulesActivity.class);
-                                i.putExtra("id", id);
-
-                                startActivity(i);
                             }
-                            else Toast.makeText(loginActivity.this, "Username or Password are invalid!", Toast.LENGTH_SHORT).show();
+                            if (!result.isEmpty() && success == "true"){
+                                Intent i = new Intent(SignupActivity.this, ModulesActivity.class);
+                                i.putExtra("id", id);
+                                startActivity(i);
+                            } else if(success == "false"){
+                                Toast.makeText(SignupActivity.this, "Username Exists!", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(SignupActivity.this, result, Toast.LENGTH_SHORT).show();
+
+                            }
                         }
                     },
                     new Response.ErrorListener() {
@@ -67,8 +81,8 @@ public class loginActivity extends AppCompatActivity {
                         }
                     });
 
-
-
             queue.add(jsonRequest);
+        }
+
     }
 }

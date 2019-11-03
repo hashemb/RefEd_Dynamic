@@ -1,8 +1,8 @@
-package com.example.hashem.refed;
+package com.example.hashem.refed.Models;
 
 public class Connection {
 
-    String URL_IP = "192.168.0.35";
+    String URL_IP = "192.168.1.5";
 
     @Override
     public String toString() {

@@ -1,8 +1,6 @@
-package com.example.hashem.refed;
+package com.example.hashem.refed.FunctionsClasses;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,10 +17,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hashem.refed.Models.Connection;
+import com.example.hashem.refed.Models.Hint;
+import com.example.hashem.refed.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class ShowHint extends Thread {
 

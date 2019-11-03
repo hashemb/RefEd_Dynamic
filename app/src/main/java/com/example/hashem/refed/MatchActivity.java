@@ -3,13 +3,12 @@ package com.example.hashem.refed;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class welcomeActivity extends AppCompatActivity {
+public class MatchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
+        setContentView(R.layout.activity_match);
 
 
     }

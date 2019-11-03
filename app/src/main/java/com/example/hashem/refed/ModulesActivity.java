@@ -7,15 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.support.v7.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.android.volley.Request;
@@ -24,13 +20,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hashem.refed.Models.Connection;
+import com.example.hashem.refed.Models.Module;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class modulesActivity extends AppCompatActivity {
+public class ModulesActivity extends AppCompatActivity {
     Module[] modules;
     Connection conn  = new Connection();
     RelativeLayout rl;
@@ -47,7 +45,7 @@ public class modulesActivity extends AppCompatActivity {
 
 
         String url = conn.toString() + "/refed/getModules.php";
-        RequestQueue queue = Volley.newRequestQueue(modulesActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(ModulesActivity.this);
 
         StringRequest jsonRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -74,7 +72,7 @@ public class modulesActivity extends AppCompatActivity {
                         }
 
                         modvid = (VideoView)findViewById(R.id.modvidView);
-                        MediaController mc = new MediaController(modulesActivity.this);
+                        MediaController mc = new MediaController(ModulesActivity.this);
                         modvid.setMediaController(mc);
 
 
@@ -104,9 +102,9 @@ public class modulesActivity extends AppCompatActivity {
                                 r++;
                             }
 
-                            ImageButton mod_btn = new ImageButton(modulesActivity.this);
+                            ImageButton mod_btn = new ImageButton(ModulesActivity.this);
                             String path = conn.toString() + "/refed/" + modules[i].getFile();
-                            Picasso.with(modulesActivity.this).load(path).resize(200,200).into(mod_btn);
+                            Picasso.with(ModulesActivity.this).load(path).resize(200,200).into(mod_btn);
 
                             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
 
@@ -125,7 +123,7 @@ public class modulesActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     super.onClick(v);
-                                    Intent intent = new Intent(modulesActivity.this, sectionsActivity.class);
+                                    Intent intent = new Intent(ModulesActivity.this, SectionsActivity.class);
                                     intent.putExtra("modid", modules[par].getId());
                                     intent.putExtra("modname", modules[par].getName());
                                     intent.putExtra("modlang", modules[par].getLang());
@@ -144,7 +142,7 @@ public class modulesActivity extends AppCompatActivity {
                 });
 
 
-        //Toast.makeText(modulesActivity.this, modules[0].toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ModulesActivity.this, modules[0].toString(), Toast.LENGTH_SHORT).show();
         queue.add(jsonRequest);
 
 
